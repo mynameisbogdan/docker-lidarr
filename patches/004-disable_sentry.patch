@@ -1,0 +1,128 @@
+diff --git a/src/NzbDrone.Common/Instrumentation/NzbDroneLogger.cs b/src/NzbDrone.Common/Instrumentation/NzbDroneLogger.cs
+index bfb404e98c..3b45e27927 100644
+--- a/src/NzbDrone.Common/Instrumentation/NzbDroneLogger.cs
++++ b/src/NzbDrone.Common/Instrumentation/NzbDroneLogger.cs
+@@ -7,7 +7,6 @@
+ using NLog.Targets;
+ using NzbDrone.Common.EnvironmentInfo;
+ using NzbDrone.Common.Extensions;
+-using NzbDrone.Common.Instrumentation.Sentry;
+ 
+ namespace NzbDrone.Common.Instrumentation
+ {
+@@ -44,8 +43,6 @@ public static void Register(IStartupContext startupContext, bool updateApp, bool
+                 RegisterDebugger();
+             }
+ 
+-            RegisterSentry(updateApp, appFolderInfo);
+-
+             if (updateApp)
+             {
+                 RegisterUpdateFile(appFolderInfo);
+@@ -65,36 +62,6 @@ public static void Register(IStartupContext startupContext, bool updateApp, bool
+             LogManager.ReconfigExistingLoggers();
+         }
+ 
+-        private static void RegisterSentry(bool updateClient, IAppFolderInfo appFolderInfo)
+-        {
+-            string dsn;
+-
+-            if (updateClient)
+-            {
+-                dsn = "https://f73eb750155b4636af91356e0ed756ea@sentry.servarr.com/20";
+-            }
+-            else
+-            {
+-                dsn = RuntimeInfo.IsProduction
+-                    ? "https://1b64e62175cd428481aa3a9ec5818a89@sentry.servarr.com/15"
+-                    : "https://0522924d625c497f86fc2a1b22aaf21d@sentry.servarr.com/16";
+-            }
+-
+-            var target = new SentryTarget(dsn, appFolderInfo)
+-            {
+-                Name = "sentryTarget",
+-                Layout = "${message}"
+-            };
+-
+-            var loggingRule = new LoggingRule("*", updateClient ? LogLevel.Trace : LogLevel.Debug, target);
+-            LogManager.Configuration.AddTarget("sentryTarget", target);
+-            LogManager.Configuration.LoggingRules.Add(loggingRule);
+-
+-            // Events logged to Sentry go only to Sentry.
+-            var loggingRuleSentry = new LoggingRule("Sentry", LogLevel.Debug, target) { Final = true };
+-            LogManager.Configuration.LoggingRules.Insert(0, loggingRuleSentry);
+-        }
+-
+         private static void RegisterDebugger()
+         {
+             var target = new DebuggerTarget();
+diff --git a/src/NzbDrone.Core/Instrumentation/ReconfigureLogging.cs b/src/NzbDrone.Core/Instrumentation/ReconfigureLogging.cs
+index 1310255fd9..e27f6d10e6 100644
+--- a/src/NzbDrone.Core/Instrumentation/ReconfigureLogging.cs
++++ b/src/NzbDrone.Core/Instrumentation/ReconfigureLogging.cs
+@@ -5,10 +5,8 @@
+ using NLog.Targets;
+ using NLog.Targets.Syslog;
+ using NLog.Targets.Syslog.Settings;
+-using NzbDrone.Common.EnvironmentInfo;
+ using NzbDrone.Common.Extensions;
+ using NzbDrone.Common.Instrumentation;
+-using NzbDrone.Common.Instrumentation.Sentry;
+ using NzbDrone.Core.Configuration;
+ using NzbDrone.Core.Configuration.Events;
+ using NzbDrone.Core.Datastore;
+@@ -64,9 +62,6 @@ public void Reconfigure()
+             // Log Sql
+             SqlBuilderExtensions.LogSql = _configFileProvider.LogSql;
+ 
+-            // Sentry
+-            ReconfigureSentry();
+-
+             LogManager.ReconfigExistingLoggers();
+         }
+ 
+@@ -102,16 +97,6 @@ private void ReconfigureFile()
+             }
+         }
+ 
+-        private void ReconfigureSentry()
+-        {
+-            var sentryTarget = LogManager.Configuration.AllTargets.OfType<SentryTarget>().FirstOrDefault();
+-            if (sentryTarget != null)
+-            {
+-                sentryTarget.SentryEnabled = (RuntimeInfo.IsProduction && _configFileProvider.AnalyticsEnabled) || RuntimeInfo.IsDevelopment;
+-                sentryTarget.FilterEvents = _configFileProvider.FilterSentryEvents;
+-            }
+-        }
+-
+         private void ReconfigureConsole()
+         {
+             var consoleTarget = LogManager.Configuration.AllTargets.OfType<ColoredConsoleTarget>().FirstOrDefault();
+diff --git a/src/NzbDrone.Host/Startup.cs b/src/NzbDrone.Host/Startup.cs
+index 75f19260e9..fe0d7b98ca 100644
+--- a/src/NzbDrone.Host/Startup.cs
++++ b/src/NzbDrone.Host/Startup.cs
+@@ -21,7 +21,6 @@
+ using Microsoft.OpenApi.Models;
+ using NLog.Extensions.Logging;
+ using NzbDrone.Common.EnvironmentInfo;
+-using NzbDrone.Common.Instrumentation;
+ using NzbDrone.Common.Processes;
+ using NzbDrone.Common.Serializer;
+ using NzbDrone.Core.Configuration;
+@@ -217,7 +216,6 @@ public void Configure(IApplicationBuilder app,
+                               Lazy<ILogDatabase> logDatabaseFactory,
+                               DatabaseTarget dbTarget,
+                               ISingleInstancePolicy singleInstancePolicy,
+-                              InitializeLogger initializeLogger,
+                               ReconfigureLogging reconfigureLogging,
+                               IAppFolderFactory appFolderFactory,
+                               IProvidePidFile pidFileProvider,
+@@ -227,7 +225,6 @@ public void Configure(IApplicationBuilder app,
+                               LidarrErrorPipeline errorHandler,
+                               IEventAggregator eventAggregator)
+         {
+-            initializeLogger.Initialize();
+             appFolderFactory.Register();
+             pidFileProvider.Write();
+ 
