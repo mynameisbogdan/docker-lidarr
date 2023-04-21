@@ -1,0 +1,169 @@
+name: 'Build Docker Image'
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to build'
+        required: true
+        type: string
+        default: 'develop'
+  schedule:
+    - cron: '0 21 * * 5'
+  pull_request:
+    paths:
+      - ".github/workflows/build.yml"
+      - "patches/**"
+      - "root/**"
+      - "Dockerfile"
+  push:
+    branches:
+      - nightly
+    paths:
+      - ".github/workflows/build.yml"
+      - "patches/**"
+      - "root/**"
+      - "Dockerfile"
+
+permissions:
+  contents: read
+  packages: write
+  
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ inputs.branch || 'build' }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: "Build Docker Image (${{ inputs.branch || 'develop' }})"
+    runs-on: ubuntu-latest
+    if: ${{ !github.event.pull_request.head.repo.fork }}
+    env:
+      CI: 1
+      FORCE_COLOR: 0
+      NO_COLOR: 1
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+      DOTNET_VERSION: 6.0.421
+      BUILD_SOURCEBRANCHNAME: develop
+      BRANCH_TO_BUILD: ${{ inputs.branch || 'develop' }}
+    steps:
+      - name: Generate metadata
+        id: gen_meta
+        run: |
+          echo "tag_branch=${{ env.BRANCH_TO_BUILD }}" | tr '[:upper:]' '[:lower:]' >> $GITHUB_OUTPUT
+            
+      - name: Retrieving external version
+        id: ext_release
+        run: |
+          EXT_RELEASE=$(curl -sL "https://lidarr.servarr.com/v1/update/nightly/changes?runtime=netcore&os=linuxmusl" | jq -r '.[0].version')
+          if [ -z "${EXT_RELEASE}" ] || [ "${EXT_RELEASE}" == "null" ]; then
+            echo "**** Can't retrieve external version, exiting ****"
+            echo "Can't retrieve external version, exiting" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+          EXT_RELEASE=$(echo ${EXT_RELEASE} | sed 's/[~,%@+;:/]//g')
+          echo "**** External version: ${EXT_RELEASE} ****"
+          echo "External version: ${EXT_RELEASE}" >> $GITHUB_STEP_SUMMARY
+          echo "LIDARRVERSION=${EXT_RELEASE}" >> $GITHUB_ENV
+          if [[ "${EXT_RELEASE}" =~ ^([0-9]+\.[0-9]+\.[0-9]+)\.([0-9]+)$ ]]; then
+            SEMVER="${BASH_REMATCH[1]}"
+            echo "**** Semantic version: ${SEMVER} ****"
+            echo "Semantic version: ${SEMVER}" >> $GITHUB_STEP_SUMMARY
+            echo "SEMVER=${SEMVER}" >> $GITHUB_ENV
+          else
+            echo "**** Can't parse semantic version, exiting ****"
+            exit 2
+          fi
+
+      - uses: actions/checkout@v4.1.6
+
+      - uses: actions/checkout@v4.1.6
+        with:
+          repository: Lidarr/Lidarr
+          ref: ${{ env.BRANCH_TO_BUILD }}
+          path: build
+          
+      - name: Apply patches
+        working-directory: build
+        run: |
+          git apply --stat --apply ../patches/001-analytics_enabled_respect_configuration.patch
+          git apply --stat --apply ../patches/002-disable_server_side_notification.patch
+          git apply --stat --apply ../patches/003-disable_system_time_check.patch
+          git apply --stat --apply ../patches/004-disable_updates.patch
+          git apply --stat --apply ../patches/005-disable_sentry.patch
+          git apply --stat --apply ../patches/006-remove_more_info.patch
+          git apply --stat --apply ../patches/007-qbittorrent_remove_log_response.patch
+          git apply --stat --apply ../patches/008-notifications_payload_content_summary.patch
+
+      - uses: actions/setup-node@v4.0.2
+        with:
+          node-version: '20.x'
+
+      - uses: actions/setup-dotnet@v4.0.0
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          
+      - name: Create temporary global.json
+        run: |
+          echo '{"sdk":{"version": "${{ env.DOTNET_VERSION }}"}}' > ./build/global.json
+          
+      - working-directory: build
+        run: dotnet --info
+
+      - name: Build Backend
+        working-directory: build
+        run: |
+          ./build.sh --backend -f net6.0 -r linux-musl-x64
+
+      - name: Build Frontend
+        working-directory: build
+        run: |
+          ./build.sh --frontend --lint
+
+      - name: Build Package
+        working-directory: build
+        run: |
+          ./build.sh --packages -f net6.0 -r linux-musl-x64
+          rm -rf _artifacts/linux-musl-x64/net6.0/Lidarr/Lidarr.Update
+          find . -name "Lidarr" -exec chmod a+x {} \;
+
+      - name: Docker meta
+        id: docker_meta
+        uses: docker/metadata-action@v5.5.1
+        with:
+          images: |
+            ghcr.io/${{ github.repository_owner }}/lidarr
+          labels: |
+            org.opencontainers.image.authors=${{ github.repository_owner }}
+            org.opencontainers.image.vendor=${{ github.repository_owner }}
+          tags: |
+            type=raw,value=${{ github.ref_name }}-${{ env.LIDARRVERSION }},enable=${{ (github.ref_name != 'master' && github.ref_name != 'main') && env.BRANCH_TO_BUILD == 'develop' }}
+            type=raw,value=${{ env.LIDARRVERSION }},enable=${{ (github.ref_name == 'master' || github.ref_name == 'main') && env.BRANCH_TO_BUILD == 'develop' }}
+            type=raw,value=${{ github.ref_name }}-${{ env.SEMVER }},enable=${{ (github.ref_name != 'master' && github.ref_name != 'main') && env.BRANCH_TO_BUILD == 'develop' }}
+            type=raw,value=${{ env.SEMVER }},enable=${{ (github.ref_name == 'master' || github.ref_name == 'main') && env.BRANCH_TO_BUILD == 'develop' }}
+            type=raw,value=${{ github.ref_name }},enable=${{ env.BRANCH_TO_BUILD == 'develop' }}
+            type=raw,value=${{ steps.gen_meta.outputs.tag_branch }}-${{ env.LIDARRVERSION }},enable=${{ env.BRANCH_TO_BUILD != 'develop' }}
+            type=raw,value=branch-${{ steps.gen_meta.outputs.tag_branch }},enable=${{ env.BRANCH_TO_BUILD != 'develop' }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.3.0
+        with:
+          platforms: linux/amd64
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3.2.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5.3.0
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          platforms: linux/amd64
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+          build-args: |
+            VERSION=${{ env.LIDARRVERSION }}-${{ github.ref_name }}-r${{ github.run_number }}

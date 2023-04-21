@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM ghcr.io/linuxserver/baseimage-alpine:3.17
+FROM ghcr.io/linuxserver/baseimage-alpine:3.19
 
 # set version label
 ARG VERSION
@@ -12,6 +12,7 @@ LABEL maintainer="nobody"
 
 # environment settings
 ENV XDG_CONFIG_HOME="/config/xdg"
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=true
 
 COPY build/_artifacts/linux-musl-x64/net6.0/Lidarr/ /app/lidarr/bin
 
@@ -19,8 +20,10 @@ RUN set -eux && \
   echo "**** install packages ****" && \
   apk add -U --upgrade --no-cache \
     chromaprint \
+    flac \
     icu-libs \
-    sqlite-libs && \
+    sqlite-libs \
+    xmlstarlet && \
   echo "**** install lidarr ****" && \
   mkdir -p /app/lidarr/bin && \
   echo -e "UpdateMethod=docker\nBranch=${LIDARR_BRANCH}\nPackageVersion=${VERSION}" > /app/lidarr/package_info && \
