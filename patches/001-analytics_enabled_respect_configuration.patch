@@ -1,0 +1,13 @@
+diff --git a/src/NzbDrone.Core/Analytics/AnalyticsService.cs b/src/NzbDrone.Core/Analytics/AnalyticsService.cs
+index f22d3d908..cb5e765bd 100644
+--- a/src/NzbDrone.Core/Analytics/AnalyticsService.cs
++++ b/src/NzbDrone.Core/Analytics/AnalyticsService.cs
+@@ -24,7 +24,7 @@ public AnalyticsService(IHistoryService historyService, IConfigFileProvider conf
+             _historyService = historyService;
+         }
+ 
+-        public bool IsEnabled => (_configFileProvider.AnalyticsEnabled && RuntimeInfo.IsProduction) || RuntimeInfo.IsDevelopment;
++        public bool IsEnabled => _configFileProvider.AnalyticsEnabled;
+ 
+         public bool InstallIsActive
+         {

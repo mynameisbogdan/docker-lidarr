@@ -1,0 +1,40 @@
+diff --git a/frontend/src/Components/Page/Header/PageHeader.js b/frontend/src/Components/Page/Header/PageHeader.js
+index 10a6d35e0..00baa3df1 100644
+--- a/frontend/src/Components/Page/Header/PageHeader.js
++++ b/frontend/src/Components/Page/Header/PageHeader.js
+@@ -76,12 +76,6 @@ class PageHeader extends Component {
+         <ArtistSearchInputConnector />
+ 
+         <div className={styles.right}>
+-          <IconButton
+-            className={styles.donate}
+-            name={icons.HEART}
+-            to="https://lidarr.audio/donate"
+-            size={14}
+-          />
+           <PageHeaderActionsMenuConnector
+             onKeyboardShortcutsPress={this.onOpenKeyboardShortcutsModal}
+           />
+diff --git a/frontend/src/System/Status/Status.js b/frontend/src/System/Status/Status.js
+index c1f5dac3b..88135d550 100644
+--- a/frontend/src/System/Status/Status.js
++++ b/frontend/src/System/Status/Status.js
+@@ -4,9 +4,7 @@ import PageContentBody from 'Components/Page/PageContentBody';
+ import translate from 'Utilities/String/translate';
+ import AboutConnector from './About/AboutConnector';
+ import DiskSpaceConnector from './DiskSpace/DiskSpaceConnector';
+-import Donations from './Donations/Donations';
+ import HealthConnector from './Health/HealthConnector';
+-import MoreInfo from './MoreInfo/MoreInfo';
+ 
+ class Status extends Component {
+ 
+@@ -20,8 +18,6 @@ class Status extends Component {
+           <HealthConnector />
+           <DiskSpaceConnector />
+           <AboutConnector />
+-          <MoreInfo />
+-          <Donations />
+         </PageContentBody>
+       </PageContent>
+     );
