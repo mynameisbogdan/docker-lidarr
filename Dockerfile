@@ -19,6 +19,7 @@ RUN set -eux && \
   echo "**** install packages ****" && \
   apk add -U --upgrade --no-cache \
     chromaprint \
+    flac \
     icu-libs \
     sqlite-libs && \
   echo "**** install lidarr ****" && \
