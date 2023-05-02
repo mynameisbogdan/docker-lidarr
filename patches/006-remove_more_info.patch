@@ -1,12 +1,11 @@
 diff --git a/frontend/src/Components/Page/Header/PageHeader.js b/frontend/src/Components/Page/Header/PageHeader.js
-index 6789b603cb..5613302909 100644
+index 6789b603cb..f97051f371 100644
 --- a/frontend/src/Components/Page/Header/PageHeader.js
 +++ b/frontend/src/Components/Page/Header/PageHeader.js
-@@ -76,19 +76,6 @@ class PageHeader extends Component {
- 
+@@ -77,13 +77,6 @@ class PageHeader extends Component {
          <ArtistSearchInputConnector />
  
--        <div className={styles.right}>
+         <div className={styles.right}>
 -          <IconButton
 -            className={styles.donate}
 -            name={icons.HEART}
@@ -14,14 +13,9 @@ index 6789b603cb..5613302909 100644
 -            to="https://lidarr.audio/donate"
 -            size={14}
 -          />
--          <PageHeaderActionsMenuConnector
--            onKeyboardShortcutsPress={this.onOpenKeyboardShortcutsModal}
--          />
--        </div>
--
-         <KeyboardShortcutsModal
-           isOpen={this.state.isKeyboardShortcutsModalOpen}
-           onModalClose={this.onKeyboardShortcutsModalClose}
+           <PageHeaderActionsMenuConnector
+             onKeyboardShortcutsPress={this.onOpenKeyboardShortcutsModal}
+           />
 diff --git a/frontend/src/System/Status/Status.js b/frontend/src/System/Status/Status.js
 index c1f5dac3bd..88135d5508 100644
 --- a/frontend/src/System/Status/Status.js
