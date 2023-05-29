@@ -63,10 +63,12 @@ jobs:
           fi
           EXT_RELEASE=$(echo ${EXT_RELEASE} | sed 's/[~,%@+;:/]//g')
           echo "**** External version: ${EXT_RELEASE} ****"
+          echo "External version: ${EXT_RELEASE}" >> $GITHUB_STEP_SUMMARY
           echo "LIDARRVERSION=${EXT_RELEASE}" >> $GITHUB_ENV
           if [[ "${EXT_RELEASE}" =~ ^([0-9]+\.[0-9]+\.[0-9]+)\.([0-9]+)$ ]]; then
             SEMVER="${BASH_REMATCH[1]}"
             echo "**** Semantic version: ${SEMVER} ****"
+            echo "Semantic version: ${SEMVER}" >> $GITHUB_STEP_SUMMARY
             echo "SEMVER=${SEMVER}" >> $GITHUB_ENV
           else
             echo "**** Can't parse semantic version, exiting ****"
