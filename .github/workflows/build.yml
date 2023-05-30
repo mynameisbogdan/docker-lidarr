@@ -59,6 +59,7 @@ jobs:
           EXT_RELEASE=$(curl -sL "https://lidarr.servarr.com/v1/update/nightly/changes?runtime=netcore&os=linuxmusl" | jq -r '.[0].version')
           if [ -z "${EXT_RELEASE}" ] || [ "${EXT_RELEASE}" == "null" ]; then
             echo "**** Can't retrieve external version, exiting ****"
+            echo "Can't retrieve external version, exiting" >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
           EXT_RELEASE=$(echo ${EXT_RELEASE} | sed 's/[~,%@+;:/]//g')
