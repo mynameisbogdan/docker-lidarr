@@ -1,8 +1,15 @@
 diff --git a/src/NzbDrone.Core/Update/UpdatePackageProvider.cs b/src/NzbDrone.Core/Update/UpdatePackageProvider.cs
-index 3c4d11564..4eb3c0efa 100644
+index 2e957b3742..e6415c90a5 100644
 --- a/src/NzbDrone.Core/Update/UpdatePackageProvider.cs
 +++ b/src/NzbDrone.Core/Update/UpdatePackageProvider.cs
-@@ -35,57 +35,12 @@ public UpdatePackageProvider(IHttpClient httpClient, ILidarrCloudRequestBuilder
+@@ -1,6 +1,5 @@
+ using System;
+ using System.Collections.Generic;
+-using System.Runtime.InteropServices;
+ using NzbDrone.Common.Cloud;
+ using NzbDrone.Common.EnvironmentInfo;
+ using NzbDrone.Common.Http;
+@@ -34,57 +33,12 @@ public UpdatePackageProvider(IHttpClient httpClient, ILidarrCloudRequestBuilder
  
          public UpdatePackage GetLatestUpdate(string branch, Version currentVersion)
          {

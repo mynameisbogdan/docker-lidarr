@@ -1,8 +1,22 @@
 diff --git a/src/NzbDrone.Core/HealthCheck/ServerSideNotificationService.cs b/src/NzbDrone.Core/HealthCheck/ServerSideNotificationService.cs
-index 0be0557ba..46cf4a891 100644
+index 0be0557bab..ee45ac062f 100644
 --- a/src/NzbDrone.Core/HealthCheck/ServerSideNotificationService.cs
 +++ b/src/NzbDrone.Core/HealthCheck/ServerSideNotificationService.cs
-@@ -47,26 +47,7 @@ public List<HealthCheck> GetServerChecks()
+@@ -1,13 +1,9 @@
+ using System;
+ using System.Collections.Generic;
+-using System.Linq;
+-using System.Runtime.InteropServices;
+ using NLog;
+ using NzbDrone.Common.Cache;
+ using NzbDrone.Common.Cloud;
+-using NzbDrone.Common.EnvironmentInfo;
+ using NzbDrone.Common.Http;
+-using NzbDrone.Common.Serializer;
+ using NzbDrone.Core.Configuration;
+ 
+ namespace NzbDrone.Core.HealthCheck
+@@ -47,26 +43,7 @@ public List<HealthCheck> GetServerChecks()
  
          private List<HealthCheck> RetrieveServerChecks()
          {

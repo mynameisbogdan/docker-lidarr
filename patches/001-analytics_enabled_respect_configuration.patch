@@ -1,8 +1,15 @@
 diff --git a/src/NzbDrone.Core/Analytics/AnalyticsService.cs b/src/NzbDrone.Core/Analytics/AnalyticsService.cs
-index f22d3d908..cb5e765bd 100644
+index f22d3d908e..3782c1e8dd 100644
 --- a/src/NzbDrone.Core/Analytics/AnalyticsService.cs
 +++ b/src/NzbDrone.Core/Analytics/AnalyticsService.cs
-@@ -24,7 +24,7 @@ public AnalyticsService(IHistoryService historyService, IConfigFileProvider conf
+@@ -1,6 +1,5 @@
+ using System;
+ using System.Linq;
+-using NzbDrone.Common.EnvironmentInfo;
+ using NzbDrone.Core.Configuration;
+ using NzbDrone.Core.Datastore;
+ using NzbDrone.Core.History;
+@@ -24,7 +23,7 @@ public AnalyticsService(IHistoryService historyService, IConfigFileProvider conf
              _historyService = historyService;
          }
  
