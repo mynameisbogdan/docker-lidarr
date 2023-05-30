@@ -55,7 +55,7 @@ index 436b65821..a1e4c1425 100644
 -
          private static void RegisterDebugger()
          {
-             DebuggerTarget target = new DebuggerTarget();
+             var target = new DebuggerTarget();
 diff --git a/src/NzbDrone.Core/Instrumentation/ReconfigureLogging.cs b/src/NzbDrone.Core/Instrumentation/ReconfigureLogging.cs
 index 38d4e627a..f8ccb8b5a 100644
 --- a/src/NzbDrone.Core/Instrumentation/ReconfigureLogging.cs
