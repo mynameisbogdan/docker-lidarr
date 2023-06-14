@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM ghcr.io/linuxserver/baseimage-alpine:3.17
+FROM ghcr.io/linuxserver/baseimage-alpine:3.18
 
 # set version label
 ARG VERSION
@@ -21,7 +21,8 @@ RUN set -eux && \
     chromaprint \
     flac \
     icu-libs \
-    sqlite-libs && \
+    sqlite-libs \
+    xmlstarlet && \
   echo "**** install lidarr ****" && \
   mkdir -p /app/lidarr/bin && \
   echo -e "UpdateMethod=docker\nBranch=${LIDARR_BRANCH}\nPackageVersion=${VERSION}" > /app/lidarr/package_info && \
