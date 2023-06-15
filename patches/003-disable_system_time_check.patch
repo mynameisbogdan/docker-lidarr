@@ -15,8 +15,8 @@ index 0de64f856d..2379df7c32 100644
          public override HealthCheck Check()
          {
 -            var request = _cloudRequestBuilder.Create()
--                                              .Resource("/time")
--                                              .Build();
+-                .Resource("/time")
+-                .Build();
 -
 -            var response = _client.Execute(request);
 -            var result = Json.Deserialize<ServiceTimeResponse>(response.Content);
