@@ -9,7 +9,7 @@ on:
         type: string
         default: 'develop'
   schedule:
-    - cron: '0 0 * * */2'
+    - cron: '0 0 * * 5'
   pull_request:
     paths:
       - ".github/workflows/build.yml"

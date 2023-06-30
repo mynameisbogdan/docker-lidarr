@@ -3,7 +3,7 @@ name: Delete old container images
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * */2'
+    - cron: '0 0 * * */3'
   push:
     paths:
       - ".github/workflows/registry-cleanup.yml"
