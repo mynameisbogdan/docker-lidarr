@@ -2,7 +2,7 @@ name: 'Build Docker Image Scheduler'
 
 on:
   schedule:
-    - cron:  '5 */2 * * *'
+    - cron:  '5 20 * * *'
   workflow_dispatch:
     
 permissions:
