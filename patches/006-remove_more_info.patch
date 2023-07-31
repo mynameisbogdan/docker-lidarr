@@ -1,8 +1,16 @@
 diff --git a/frontend/src/Components/Page/Header/PageHeader.js b/frontend/src/Components/Page/Header/PageHeader.js
-index 6789b603cb..f97051f371 100644
+index d381b76920..c018a3973f 100644
 --- a/frontend/src/Components/Page/Header/PageHeader.js
 +++ b/frontend/src/Components/Page/Header/PageHeader.js
-@@ -77,13 +77,6 @@ class PageHeader extends Component {
+@@ -4,7 +4,6 @@ import keyboardShortcuts, { shortcuts } from 'Components/keyboardShortcuts';
+ import IconButton from 'Components/Link/IconButton';
+ import Link from 'Components/Link/Link';
+ import { icons } from 'Helpers/Props';
+-import translate from 'Utilities/String/translate';
+ import ArtistSearchInputConnector from './ArtistSearchInputConnector';
+ import KeyboardShortcutsModal from './KeyboardShortcutsModal';
+ import PageHeaderActionsMenuConnector from './PageHeaderActionsMenuConnector';
+@@ -75,20 +74,6 @@ class PageHeader extends Component {
          <ArtistSearchInputConnector />
  
          <div className={styles.right}>
@@ -12,6 +20,13 @@ index 6789b603cb..f97051f371 100644
 -            aria-label="Donate"
 -            to="https://lidarr.audio/donate"
 -            size={14}
+-          />
+-          <IconButton
+-            className={styles.translation}
+-            title={translate('SuggestTranslationChange')}
+-            name={icons.TRANSLATE}
+-            to="https://translate.servarr.com/projects/servarr/lidarr/"
+-            size={24}
 -          />
            <PageHeaderActionsMenuConnector
              onKeyboardShortcutsPress={this.onOpenKeyboardShortcutsModal}
