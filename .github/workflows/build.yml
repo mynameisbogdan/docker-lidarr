@@ -118,16 +118,17 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
           restore-keys: |
             ${{ runner.os }}-nuget
+            
+      - name: Build Frontend
+        working-directory: build
+        run: |
+          yarn lint
+          ./build.sh --frontend
 
       - name: Build Backend
         working-directory: build
         run: |
           ./build.sh --backend -f net6.0 -r linux-musl-x64
-
-      - name: Build Frontend
-        working-directory: build
-        run: |
-          ./build.sh --frontend
 
       - name: Build Package
         working-directory: build
