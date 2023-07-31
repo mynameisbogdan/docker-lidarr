@@ -122,8 +122,7 @@ jobs:
       - name: Build Frontend
         working-directory: build
         run: |
-          yarn lint
-          ./build.sh --frontend
+          ./build.sh --frontend --lint
 
       - name: Build Backend
         working-directory: build
