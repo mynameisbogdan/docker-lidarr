@@ -1,0 +1,39 @@
+diff --git a/src/NzbDrone.Core/Notifications/Apprise/AppriseProxy.cs b/src/NzbDrone.Core/Notifications/Apprise/AppriseProxy.cs
+index 794aea16a1..da0597709b 100644
+--- a/src/NzbDrone.Core/Notifications/Apprise/AppriseProxy.cs
++++ b/src/NzbDrone.Core/Notifications/Apprise/AppriseProxy.cs
+@@ -2,6 +2,7 @@
+ using System.Linq;
+ using System.Net;
+ using FluentValidation.Results;
++using Newtonsoft.Json;
+ using NLog;
+ using NzbDrone.Common.Extensions;
+ using NzbDrone.Common.Http;
+@@ -66,6 +67,7 @@ public void SendNotification(string title, string message, AppriseSettings setti
+ 
+             request.Headers.ContentType = "application/json";
+             request.SetContent(payload.ToJson());
++            request.ContentSummary = payload.ToJson(Formatting.None);
+ 
+             try
+             {
+diff --git a/src/NzbDrone.Core/Notifications/Webhook/WebhookProxy.cs b/src/NzbDrone.Core/Notifications/Webhook/WebhookProxy.cs
+index 23a7fbdc8c..fad3767125 100644
+--- a/src/NzbDrone.Core/Notifications/Webhook/WebhookProxy.cs
++++ b/src/NzbDrone.Core/Notifications/Webhook/WebhookProxy.cs
+@@ -1,5 +1,6 @@
+ using System;
+ using System.Net.Http;
++using Newtonsoft.Json;
+ using NzbDrone.Common.Extensions;
+ using NzbDrone.Common.Http;
+ using NzbDrone.Common.Serializer;
+@@ -37,6 +38,7 @@ public void SendWebhook(WebhookPayload body, WebhookSettings settings)
+ 
+                 request.Headers.ContentType = "application/json";
+                 request.SetContent(body.ToJson());
++                request.ContentSummary = body.ToJson(Formatting.None);
+ 
+                 if (settings.Username.IsNotNullOrWhiteSpace() || settings.Password.IsNotNullOrWhiteSpace())
+                 {
