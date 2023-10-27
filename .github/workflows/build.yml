@@ -96,7 +96,7 @@ jobs:
           git apply --stat --apply ../patches/007-qbittorrent_remove_log_response.patch
           git apply --stat --apply ../patches/008-notifications_payload_content_summary.patch
 
-      - uses: actions/setup-node@v3.8.1
+      - uses: actions/setup-node@v4.0.0
         with:
           node-version: '18.x'
           cache: 'yarn'
