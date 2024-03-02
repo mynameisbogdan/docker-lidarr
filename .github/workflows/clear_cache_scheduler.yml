@@ -1,0 +1,29 @@
+name: 'Clear Cache Scheduler'
+
+on:
+  workflow_dispatch:
+#  schedule:
+#    - cron:  '30 * * * *'
+  push:
+    branches:
+      - nightly
+    paths:
+      - ".github/workflows/clear_cache_scheduler.yml"
+
+concurrency:
+  group: clear-cache-scheduler-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-scheduler:
+    if: github.ref == 'refs/heads/nightlyx'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Script
+        run: |
+          curl "https://api.lidarr.audio/api/v0.4/recent/artist?since=$(date -d "-30 mins" +%s)" | jq -r 'limit(50; .Items[])' | while read -r guid; do 
+            echo "artist/$guid"; curl --silent -X POST "https://api.lidarr.audio/api/v0.4/artist/$guid/refresh";
+          done
+          curl "https://api.lidarr.audio/api/v0.4/recent/album?since=$(date -d "-30 mins" +%s)" | jq -r 'limit(50; .Items[])' | while read -r guid; do 
+            echo "album/$guid"; curl --silent -X POST "https://api.lidarr.audio/api/v0.4/album/$guid/refresh"; 
+          done
