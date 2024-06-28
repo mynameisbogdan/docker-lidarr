@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Delete old images
-        uses: snok/container-retention-policy@v2.2.1
+        uses: snok/container-retention-policy@v3.0.0
         with:
           image-names: lidarr
           cut-off: 1 hour ago UTC
