@@ -7,7 +7,7 @@ on:
         description: 'Branch to build'
         required: true
         type: string
-        default: 'develop'
+        default: 'build'
   schedule:
     - cron: '0 21 * * 5'
   pull_request:
@@ -35,7 +35,7 @@ concurrency:
 
 jobs:
   build:
-    name: "Build Docker Image (${{ inputs.branch || 'develop' }})"
+    name: "Build Docker Image (${{ inputs.branch || 'build' }})"
     runs-on: ubuntu-latest
     if: ${{ !github.event.pull_request.head.repo.fork }}
     env:
@@ -45,7 +45,7 @@ jobs:
       DOTNET_CLI_TELEMETRY_OPTOUT: true
       DOTNET_VERSION: 6.0.424
       BUILD_SOURCEBRANCHNAME: develop
-      BRANCH_TO_BUILD: ${{ inputs.branch || 'develop' }}
+      BRANCH_TO_BUILD: ${{ inputs.branch || 'build' }}
     steps:
       - name: Generate metadata
         id: gen_meta
@@ -79,7 +79,7 @@ jobs:
 
       - uses: actions/checkout@v4.1.7
         with:
-          repository: Lidarr/Lidarr
+          repository: ${{ github.repository_owner }}/Lidarr
           ref: ${{ env.BRANCH_TO_BUILD }}
           path: build
           
@@ -137,13 +137,13 @@ jobs:
             org.opencontainers.image.authors=${{ github.repository_owner }}
             org.opencontainers.image.vendor=${{ github.repository_owner }}
           tags: |
-            type=raw,value=${{ github.ref_name }}-${{ env.LIDARRVERSION }},enable=${{ (github.ref_name != 'master' && github.ref_name != 'main') && env.BRANCH_TO_BUILD == 'develop' }}
-            type=raw,value=${{ env.LIDARRVERSION }},enable=${{ (github.ref_name == 'master' || github.ref_name == 'main') && env.BRANCH_TO_BUILD == 'develop' }}
-            type=raw,value=${{ github.ref_name }}-${{ env.SEMVER }},enable=${{ (github.ref_name != 'master' && github.ref_name != 'main') && env.BRANCH_TO_BUILD == 'develop' }}
-            type=raw,value=${{ env.SEMVER }},enable=${{ (github.ref_name == 'master' || github.ref_name == 'main') && env.BRANCH_TO_BUILD == 'develop' }}
-            type=raw,value=${{ github.ref_name }},enable=${{ env.BRANCH_TO_BUILD == 'develop' }}
-            type=raw,value=${{ steps.gen_meta.outputs.tag_branch }}-${{ env.LIDARRVERSION }},enable=${{ env.BRANCH_TO_BUILD != 'develop' }}
-            type=raw,value=branch-${{ steps.gen_meta.outputs.tag_branch }},enable=${{ env.BRANCH_TO_BUILD != 'develop' }}
+            type=raw,value=${{ github.ref_name }}-${{ env.LIDARRVERSION }},enable=${{ (github.ref_name != 'master' && github.ref_name != 'main') && env.BRANCH_TO_BUILD == 'build' }}
+            type=raw,value=${{ env.LIDARRVERSION }},enable=${{ (github.ref_name == 'master' || github.ref_name == 'main') && env.BRANCH_TO_BUILD == 'build' }}
+            type=raw,value=${{ github.ref_name }}-${{ env.SEMVER }},enable=${{ (github.ref_name != 'master' && github.ref_name != 'main') && env.BRANCH_TO_BUILD == 'build' }}
+            type=raw,value=${{ env.SEMVER }},enable=${{ (github.ref_name == 'master' || github.ref_name == 'main') && env.BRANCH_TO_BUILD == 'build' }}
+            type=raw,value=${{ github.ref_name }},enable=${{ env.BRANCH_TO_BUILD == 'build' }}
+            type=raw,value=${{ steps.gen_meta.outputs.tag_branch }}-${{ env.LIDARRVERSION }},enable=${{ env.BRANCH_TO_BUILD != 'build' }}
+            type=raw,value=branch-${{ steps.gen_meta.outputs.tag_branch }},enable=${{ env.BRANCH_TO_BUILD != 'build' }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.5.0
