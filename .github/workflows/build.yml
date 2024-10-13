@@ -43,7 +43,7 @@ jobs:
       FORCE_COLOR: 0
       NO_COLOR: 1
       DOTNET_CLI_TELEMETRY_OPTOUT: true
-      DOTNET_VERSION: 6.0.424
+      DOTNET_VERSION: 6.0.427
       BUILD_SOURCEBRANCHNAME: develop
       BRANCH_TO_BUILD: ${{ inputs.branch || 'build' }}
     steps:
