@@ -1,5 +1,5 @@
 diff --git a/src/NzbDrone.Core/Update/UpdatePackageProvider.cs b/src/NzbDrone.Core/Update/UpdatePackageProvider.cs
-index 2e957b3742..e6415c90a5 100644
+index 08761fde7e..91022d3d93 100644
 --- a/src/NzbDrone.Core/Update/UpdatePackageProvider.cs
 +++ b/src/NzbDrone.Core/Update/UpdatePackageProvider.cs
 @@ -1,6 +1,5 @@
@@ -9,7 +9,24 @@ index 2e957b3742..e6415c90a5 100644
  using NzbDrone.Common.Cloud;
  using NzbDrone.Common.EnvironmentInfo;
  using NzbDrone.Common.Http;
-@@ -34,57 +33,12 @@ public UpdatePackageProvider(IHttpClient httpClient, ILidarrCloudRequestBuilder
+@@ -17,75 +16,18 @@ public interface IUpdatePackageProvider
+ 
+     public class UpdatePackageProvider : IUpdatePackageProvider
+     {
+-        private readonly IHttpClient _httpClient;
+-        private readonly IHttpRequestBuilderFactory _requestBuilder;
+-        private readonly IPlatformInfo _platformInfo;
+-        private readonly IAnalyticsService _analyticsService;
+-        private readonly IMainDatabase _mainDatabase;
+-
+         public UpdatePackageProvider(IHttpClient httpClient, ILidarrCloudRequestBuilder requestBuilder, IAnalyticsService analyticsService, IPlatformInfo platformInfo, IMainDatabase mainDatabase)
+         {
+-            _platformInfo = platformInfo;
+-            _analyticsService = analyticsService;
+-            _requestBuilder = requestBuilder.Services;
+-            _httpClient = httpClient;
+-            _mainDatabase = mainDatabase;
+         }
  
          public UpdatePackage GetLatestUpdate(string branch, Version currentVersion)
          {
@@ -21,6 +38,7 @@ index 2e957b3742..e6415c90a5 100644
 -                                         .AddQueryParam("runtime", "netcore")
 -                                         .AddQueryParam("runtimeVer", _platformInfo.Version)
 -                                         .AddQueryParam("dbType", _mainDatabase.DatabaseType)
+-                                         .AddQueryParam("includeMajorVersion", true)
 -                                         .SetSegment("branch", branch);
 -
 -            if (_analyticsService.IsEnabled)
