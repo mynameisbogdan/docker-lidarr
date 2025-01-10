@@ -1,5 +1,5 @@
 diff --git a/src/NzbDrone.Common/Instrumentation/NzbDroneLogger.cs b/src/NzbDrone.Common/Instrumentation/NzbDroneLogger.cs
-index 74883c959e..3b45e27927 100644
+index bfb404e98c..3b45e27927 100644
 --- a/src/NzbDrone.Common/Instrumentation/NzbDroneLogger.cs
 +++ b/src/NzbDrone.Common/Instrumentation/NzbDroneLogger.cs
 @@ -7,7 +7,6 @@
@@ -14,7 +14,7 @@ index 74883c959e..3b45e27927 100644
                  RegisterDebugger();
              }
  
--            RegisterSentry(updateApp);
+-            RegisterSentry(updateApp, appFolderInfo);
 -
              if (updateApp)
              {
@@ -23,7 +23,7 @@ index 74883c959e..3b45e27927 100644
              LogManager.ReconfigExistingLoggers();
          }
  
--        private static void RegisterSentry(bool updateClient)
+-        private static void RegisterSentry(bool updateClient, IAppFolderInfo appFolderInfo)
 -        {
 -            string dsn;
 -
@@ -38,7 +38,7 @@ index 74883c959e..3b45e27927 100644
 -                    : "https://0522924d625c497f86fc2a1b22aaf21d@sentry.servarr.com/16";
 -            }
 -
--            var target = new SentryTarget(dsn)
+-            var target = new SentryTarget(dsn, appFolderInfo)
 -            {
 -                Name = "sentryTarget",
 -                Layout = "${message}"
@@ -99,7 +99,7 @@ index 1310255fd9..e27f6d10e6 100644
          {
              var consoleTarget = LogManager.Configuration.AllTargets.OfType<ColoredConsoleTarget>().FirstOrDefault();
 diff --git a/src/NzbDrone.Host/Startup.cs b/src/NzbDrone.Host/Startup.cs
-index 84f2a3fb63..27569ae740 100644
+index 75f19260e9..fe0d7b98ca 100644
 --- a/src/NzbDrone.Host/Startup.cs
 +++ b/src/NzbDrone.Host/Startup.cs
 @@ -21,7 +21,6 @@
