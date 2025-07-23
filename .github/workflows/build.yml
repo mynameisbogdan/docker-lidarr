@@ -43,14 +43,15 @@ jobs:
       FORCE_COLOR: 0
       NO_COLOR: 1
       DOTNET_CLI_TELEMETRY_OPTOUT: true
-      DOTNET_VERSION: 6.0.427
       BUILD_SOURCEBRANCHNAME: develop
       BRANCH_TO_BUILD: ${{ inputs.branch || 'build' }}
+      RAW_BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     steps:
       - name: Generate metadata
         id: gen_meta
         run: |
           echo "tag_branch=${{ env.BRANCH_TO_BUILD }}" | tr '[:upper:]' '[:lower:]' >> $GITHUB_OUTPUT
+          echo "BRANCH=${RAW_BRANCH_NAME//\//-}" >> "$GITHUB_ENV"
             
       - name: Retrieving external version
         id: ext_release
@@ -101,11 +102,7 @@ jobs:
 
       - uses: actions/setup-dotnet@v4.3.1
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-          
-      - name: Create temporary global.json
-        run: |
-          echo '{"sdk":{"version": "${{ env.DOTNET_VERSION }}"}}' > ./build/global.json
+          dotnet-version: '6.0.x'
           
       - working-directory: build
         run: dotnet --info
@@ -138,11 +135,11 @@ jobs:
             org.opencontainers.image.vendor=${{ github.repository_owner }}
             build_version=${{ env.LIDARRVERSION }}
           tags: |
-            type=raw,value=${{ github.ref_name }}-${{ env.LIDARRVERSION }},enable=${{ (github.ref_name != 'master' && github.ref_name != 'main') && env.BRANCH_TO_BUILD == 'build' }}
+            type=raw,value=${{ env.BRANCH }}-${{ env.LIDARRVERSION }},enable=${{ (github.ref_name != 'master' && github.ref_name != 'main') && env.BRANCH_TO_BUILD == 'build' }}
             type=raw,value=${{ env.LIDARRVERSION }},enable=${{ (github.ref_name == 'master' || github.ref_name == 'main') && env.BRANCH_TO_BUILD == 'build' }}
-            type=raw,value=${{ github.ref_name }}-${{ env.SEMVER }},enable=${{ (github.ref_name != 'master' && github.ref_name != 'main') && env.BRANCH_TO_BUILD == 'build' }}
+            type=raw,value=${{ env.BRANCH }}-${{ env.SEMVER }},enable=${{ (github.ref_name != 'master' && github.ref_name != 'main') && env.BRANCH_TO_BUILD == 'build' }}
             type=raw,value=${{ env.SEMVER }},enable=${{ (github.ref_name == 'master' || github.ref_name == 'main') && env.BRANCH_TO_BUILD == 'build' }}
-            type=raw,value=${{ github.ref_name }},enable=${{ env.BRANCH_TO_BUILD == 'build' }}
+            type=raw,value=${{ env.BRANCH }},enable=${{ env.BRANCH_TO_BUILD == 'build' }}
             type=raw,value=${{ steps.gen_meta.outputs.tag_branch }}-${{ env.LIDARRVERSION }},enable=${{ env.BRANCH_TO_BUILD != 'build' }}
             type=raw,value=branch-${{ steps.gen_meta.outputs.tag_branch }},enable=${{ env.BRANCH_TO_BUILD != 'build' }}
 
@@ -167,4 +164,4 @@ jobs:
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
           build-args: |
-            VERSION=${{ env.LIDARRVERSION }}-${{ github.ref_name }}-r${{ github.run_number }}
+            VERSION=${{ env.LIDARRVERSION }}-${{ env.BRANCH }}-r${{ github.run_number }}
