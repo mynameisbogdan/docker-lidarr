@@ -1,42 +1,44 @@
 # syntax=docker/dockerfile:1
 
-FROM ghcr.io/linuxserver/baseimage-alpine:3.22
+FROM docker.io/library/alpine:3.22
 
-# set version label
 ARG VERSION
-ARG LIDARR_RELEASE
-ARG LIDARR_BRANCH="nightly"
 
-LABEL build_version=$VERSION
-LABEL maintainer="nobody"
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 \
+  DOTNET_EnableDiagnostics=0 \
+  LIDARR__UPDATE__BRANCH=nightly
+  
+USER root
+WORKDIR /app
 
-# environment settings
-ENV XDG_CONFIG_HOME="/config/xdg"
-ENV DOTNET_CLI_TELEMETRY_OPTOUT=true
-
-COPY build/_artifacts/linux-musl-x64/net6.0/Lidarr/ /app/lidarr/bin
+COPY --chown=0:0 --chmod=755 \
+  build/_artifacts/linux-musl-x64/net6.0/Lidarr/ /app/lidarr/bin
 
 RUN set -eux && \
   echo "**** install packages ****" && \
   apk add -U --upgrade --no-cache \
+    bash \
+    ca-certificates \
+    catatonit \
     chromaprint \
     flac \
     icu-libs \
     sqlite-libs \
-    xmlstarlet && \
+    tzdata && \
   echo "**** install lidarr ****" && \
   mkdir -p /app/lidarr/bin && \
-  echo -e "UpdateMethod=docker\nBranch=${LIDARR_BRANCH}\nPackageVersion=${VERSION}" > /app/lidarr/package_info && \
-  printf "Custom version: ${VERSION}" > /build_version && \
+  echo -e "UpdateMethod=docker\nBranch=${LIDARR__UPDATE__BRANCH}\nPackageVersion=${VERSION}" > /app/lidarr/package_info && \
   echo "**** cleanup ****" && \
   rm -rf \
     /app/lidarr/bin/Lidarr.Update \
     /tmp/*
 
-# copy local files
 COPY root/ /
 
-# ports and volumes
+USER nobody:nogroup
+WORKDIR /config
+VOLUME ["/config"]
+
 EXPOSE 8686
 
-VOLUME /config
+ENTRYPOINT ["/usr/bin/catatonit", "--", "/entrypoint.sh"]
