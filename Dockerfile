@@ -21,6 +21,7 @@ RUN set -eux && \
     ca-certificates \
     catatonit \
     chromaprint \
+    curl \
     flac \
     icu-libs \
     sqlite-libs \
