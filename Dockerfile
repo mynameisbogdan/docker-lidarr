@@ -12,7 +12,7 @@ USER root
 WORKDIR /app
 
 COPY --chown=0:0 --chmod=755 \
-  build/_artifacts/linux-musl-x64/net6.0/Lidarr/ /app/lidarr/bin
+  build/_artifacts/linux-musl-x64/net8.0/Lidarr/ /app/lidarr/bin
 
 RUN set -eux && \
   echo "**** install packages ****" && \
