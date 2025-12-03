@@ -85,13 +85,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out source code
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           repository: ${{ github.repository_owner }}/Lidarr
           ref: ${{ needs.prepare.outputs.build_branch }}
 
       - name: Setup node
-        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
           node-version: 24
           cache: yarn
@@ -134,10 +134,10 @@ jobs:
           echo "LIDARRVERSION=${{ needs.prepare.outputs.version }}" >> "$GITHUB_ENV"
 
       - name: Check out
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: Check out source code
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           repository: ${{ github.repository_owner }}/Lidarr
           ref: ${{ needs.prepare.outputs.build_branch }}
@@ -189,7 +189,7 @@ jobs:
           - linux-musl-x64
     steps:
       - name: Check out source code
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           repository: ${{ github.repository_owner }}/Lidarr
           ref: ${{ needs.prepare.outputs.build_branch }}
@@ -241,7 +241,7 @@ jobs:
           echo "SEMVER=${{ needs.prepare.outputs.semantic_version }}" >> "$GITHUB_ENV"
 
       - name: Check out
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: Download package artifacts
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
