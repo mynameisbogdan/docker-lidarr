@@ -19,13 +19,13 @@ IPAddressRange                                               6.2.0              
 Ical.Net                                                     4.3.1                dotnet      (+2 duplicates)  
 ImpromptuInterface                                           8.0.6                dotnet      (+3 duplicates)  
 Lidarr                                                       1.0.0                dotnet                       
-Lidarr.Api.V1                                                1.0.0                dotnet      (+2 duplicates)  
-Lidarr.Common                                                1.0.0                dotnet      (+7 duplicates)  
-Lidarr.Core                                                  1.0.0                dotnet      (+5 duplicates)  
-Lidarr.Host                                                  1.0.0                dotnet      (+1 duplicate)   
-Lidarr.Http                                                  1.0.0                dotnet      (+3 duplicates)  
+Lidarr.Api.V1                                                1.0.0                dotnet                       
+Lidarr.Common                                                1.0.0                dotnet                       
+Lidarr.Core                                                  1.0.0                dotnet                       
+Lidarr.Host                                                  1.0.0                dotnet                       
+Lidarr.Http                                                  1.0.0                dotnet                       
 Lidarr.Mono                                                  1.0.0                dotnet                       
-Lidarr.SignalR                                               1.0.0                dotnet      (+4 duplicates)  
+Lidarr.SignalR                                               1.0.0                dotnet                       
 MailKit                                                      4.14.1               dotnet      (+5 duplicates)  
 Microsoft.AspNetCore.Cryptography.Internal                   9.0.10               dotnet                       
 Microsoft.AspNetCore.Cryptography.KeyDerivation              9.0.10               dotnet                       
