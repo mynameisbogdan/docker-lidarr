@@ -30,7 +30,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  FRAMEWORK: net9.0
+  FRAMEWORK: net10.0
 
 jobs:
   prepare:
@@ -97,7 +97,7 @@ jobs:
           cache: yarn
 
       - name: Yarn Install
-        run: yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile --network-timeout 120000
 
       - name: Lint
         run: yarn lint
@@ -106,7 +106,7 @@ jobs:
         run: yarn stylelint-linux -f github
 
       - name: Build
-        run: yarn build --env production
+        run: yarn run build --env production
 
       - name: Publish UI Artifact
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
@@ -154,7 +154,7 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: '10.0.x'
 
       - working-directory: build
         run: dotnet --info
