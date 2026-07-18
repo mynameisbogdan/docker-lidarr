@@ -26,6 +26,8 @@ RUN set -eux && \
     curl \
     flac \
     icu-libs \
+    jq \
+    krb5-libs \
     tzdata && \
   echo "**** install lidarr ****" && \
   mkdir -p /app/lidarr/bin && \
