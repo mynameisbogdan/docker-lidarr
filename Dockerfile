@@ -22,7 +22,6 @@ RUN set -eux && \
     bash \
     ca-certificates \
     catatonit \
-    chromaprint \
     curl \
     flac \
     icu-libs \
