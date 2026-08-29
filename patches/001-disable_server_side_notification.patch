@@ -1,25 +1,56 @@
 diff --git a/src/NzbDrone.Core/HealthCheck/ServerSideNotificationService.cs b/src/NzbDrone.Core/HealthCheck/ServerSideNotificationService.cs
-index e09a498128..c49598173f 100644
+index 473156e55c..4adb949292 100644
 --- a/src/NzbDrone.Core/HealthCheck/ServerSideNotificationService.cs
 +++ b/src/NzbDrone.Core/HealthCheck/ServerSideNotificationService.cs
-@@ -1,13 +1,8 @@
- using System;
+@@ -1,81 +1,17 @@
+-using System;
 -using System.Collections.Generic;
 -using System.Linq;
 -using System.Runtime.InteropServices;
- using NLog;
- using NzbDrone.Common.Cache;
- using NzbDrone.Common.Cloud;
+-using NLog;
+-using NzbDrone.Common.Cache;
+-using NzbDrone.Common.Cloud;
 -using NzbDrone.Common.EnvironmentInfo;
- using NzbDrone.Common.Http;
+-using NzbDrone.Common.Http;
 -using NzbDrone.Common.Serializer;
- using NzbDrone.Core.Configuration;
+-using NzbDrone.Core.Configuration;
  using NzbDrone.Core.Localization;
  
-@@ -45,33 +40,7 @@ public override HealthCheck Check()
- 
-         private HealthCheck RetrieveServerChecks()
+ namespace NzbDrone.Core.HealthCheck
+ {
+     public class ServerSideNotificationService : HealthCheckBase
+     {
+-        private readonly IHttpClient _client;
+-        private readonly IConfigFileProvider _configFileProvider;
+-        private readonly ILidarrCloudRequestBuilder _cloudRequestBuilder;
+-        private readonly Logger _logger;
+-
+-        private readonly ICached<HealthCheck> _cache;
+-
+-        public ServerSideNotificationService(IHttpClient client,
+-                                             ILidarrCloudRequestBuilder cloudRequestBuilder,
+-                                             IConfigFileProvider configFileProvider,
+-                                             ILocalizationService localizationService,
+-                                             ICacheManager cacheManager,
+-                                             Logger logger)
++        public ServerSideNotificationService(ILocalizationService localizationService)
+             : base(localizationService)
          {
+-            _client = client;
+-            _cloudRequestBuilder = cloudRequestBuilder;
+-            _configFileProvider = configFileProvider;
+-            _logger = logger;
+-
+-            _cache = cacheManager.GetCache<HealthCheck>(GetType());
+         }
+ 
+         public override HealthCheck Check()
+         {
+-            return _cache.Get("ServerChecks", RetrieveServerChecks, TimeSpan.FromHours(2));
+-        }
+-
+-        private HealthCheck RetrieveServerChecks()
+-        {
 -            var request = _cloudRequestBuilder.Services.Create()
 -                .Resource("/notification")
 -                .AddQueryParam("version", BuildInfo.Version)
@@ -36,7 +67,11 @@ index e09a498128..c49598173f 100644
 -                var response = _client.Execute(request);
 -                var result = Json.Deserialize<List<ServerNotificationResponse>>(response.Content);
 -
--                var checks = result.Select(x => new HealthCheck(GetType(), x.Type, x.Message, x.WikiUrl)).ToList();
+-                var checks = result.Select(x => new HealthCheck(GetType(),
+-                    x.Type,
+-                    HealthCheckReason.ServerNotification,
+-                    x.Message,
+-                    x.WikiUrl)).ToList();
 -
 -                // Only one health check is supported, services returns an ordered list, so use the first one
 -                return checks.FirstOrDefault() ?? new HealthCheck(GetType());
