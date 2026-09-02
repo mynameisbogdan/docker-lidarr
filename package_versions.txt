@@ -121,7 +121,7 @@ curl                                                         8.21.0-r0         a
 flac                                                         1.4.3-r2          apk                      
 icu-data-en                                                  78.1-r0           apk                      
 icu-libs                                                     78.1-r0           apk                      
-jq                                                           1.8.1-r0          apk                      
+jq                                                           1.8.2-r0          apk                      
 keyutils-libs                                                1.6.3-r4          apk                      
 krb5-conf                                                    1.0-r2            apk                      
 krb5-libs                                                    1.22.2-r1         apk                      
