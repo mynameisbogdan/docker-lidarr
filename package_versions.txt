@@ -56,7 +56,6 @@ Microsoft.Extensions.Options                                 10.0.12           d
 Microsoft.Extensions.Options.ConfigurationExtensions         10.0.12           dotnet  (+2 duplicates)  
 Microsoft.Extensions.Primitives                              10.0.12           dotnet  (+2 duplicates)  
 Microsoft.OpenApi                                            2.7.5             dotnet  (+2 duplicates)  
-Microsoft.Win32.SystemEvents                                 10.0.12           dotnet  (+5 duplicates)  
 MimeKit                                                      4.18.0            dotnet  (+5 duplicates)  
 Mono.Nat                                                     3.0.0             dotnet  (+5 duplicates)  
 MonoTorrent                                                  3.0.2             dotnet  (+5 duplicates)  
@@ -84,7 +83,6 @@ Swashbuckle.AspNetCore.Swagger                               10.2.3            d
 Swashbuckle.AspNetCore.SwaggerGen                            10.2.3            dotnet  (+2 duplicates)  
 System.Data.SQLite                                           2.0.4             dotnet  (+7 duplicates)  
 System.Diagnostics.EventLog                                  10.0.12           dotnet  (+2 duplicates)  
-System.Drawing.Common                                        10.0.12           dotnet  (+5 duplicates)  
 System.IO.Abstractions                                       17.0.24           dotnet  (+7 duplicates)  
 System.Security.Cryptography.Pkcs                            10.0.0            dotnet                   
 System.ServiceProcess.ServiceController                      10.0.12           dotnet  (+7 duplicates)  
