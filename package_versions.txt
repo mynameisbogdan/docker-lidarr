@@ -1,6 +1,6 @@
 NAME                                                         VERSION           TYPE                     
 BouncyCastle.Cryptography                                    2.7.0             dotnet  (+5 duplicates)  
-Dapper                                                       2.1.86            dotnet  (+5 duplicates)  
+Dapper                                                       2.1.89            dotnet  (+5 duplicates)  
 Diacritical.Net                                              1.0.5             dotnet  (+5 duplicates)  
 DryIoc.Microsoft.DependencyInjection                         6.2.0             dotnet  (+1 duplicate)   
 DryIoc.dll                                                   5.4.3             dotnet  (+7 duplicates)  
@@ -15,7 +15,7 @@ FluentMigrator.Runner.SQLite                                 6.2.0             d
 FluentValidation                                             9.5.4             dotnet  (+5 duplicates)  
 IPAddressRange                                               6.3.0             dotnet  (+7 duplicates)  
 Ical.Net                                                     4.3.1             dotnet  (+2 duplicates)  
-ImpromptuInterface                                           8.0.6             dotnet  (+3 duplicates)  
+ImpromptuInterface                                           8.1.0             dotnet  (+3 duplicates)  
 Lidarr                                                       1.0.0             dotnet                   
 Lidarr.Api.V1                                                1.0.0             dotnet                   
 Lidarr.Common                                                1.0.0             dotnet                   
@@ -24,7 +24,7 @@ Lidarr.Host                                                  1.0.0             d
 Lidarr.Http                                                  1.0.0             dotnet                   
 Lidarr.Mono                                                  1.0.0             dotnet                   
 Lidarr.SignalR                                               1.0.0             dotnet                   
-MailKit                                                      4.18.0            dotnet  (+5 duplicates)  
+MailKit                                                      4.18.1            dotnet  (+5 duplicates)  
 Microsoft.AspNetCore.Cryptography.Internal                   10.0.12           dotnet                   
 Microsoft.AspNetCore.Cryptography.KeyDerivation              10.0.12           dotnet                   
 Microsoft.Extensions.Configuration                           10.0.12           dotnet  (+2 duplicates)  
@@ -56,7 +56,7 @@ Microsoft.Extensions.Options                                 10.0.12           d
 Microsoft.Extensions.Options.ConfigurationExtensions         10.0.12           dotnet  (+2 duplicates)  
 Microsoft.Extensions.Primitives                              10.0.12           dotnet  (+2 duplicates)  
 Microsoft.OpenApi                                            2.7.5             dotnet  (+2 duplicates)  
-MimeKit                                                      4.18.0            dotnet  (+5 duplicates)  
+MimeKit                                                      4.18.1            dotnet  (+5 duplicates)  
 Mono.Nat                                                     3.0.0             dotnet  (+5 duplicates)  
 MonoTorrent                                                  3.0.2             dotnet  (+5 duplicates)  
 NLog                                                         5.5.1             dotnet  (+7 duplicates)  
@@ -66,9 +66,9 @@ NLog.Targets.Syslog                                          7.0.0             d
 Newtonsoft.Json                                              13.0.4            dotnet  (+7 duplicates)  
 NodaTime                                                     3.2.0             dotnet  (+2 duplicates)  
 Npgsql                                                       10.0.3            dotnet  (+5 duplicates)  
-Openur.ChromaprintStatic                                     1.6.1.6           dotnet  (+5 duplicates)  
+Openur.ChromaprintStatic                                     1.6.1.7           dotnet  (+5 duplicates)  
 Openur.Mono.Unix                                             7.1.0.256         dotnet                   
-Openur.TagLibSharp                                           2.5.0.6           dotnet  (+5 duplicates)  
+Openur.TagLibSharp                                           2.5.0.7           dotnet  (+5 duplicates)  
 Polly                                                        8.8.0             dotnet  (+5 duplicates)  
 Polly.Contrib.WaitAndRetry                                   1.1.1             dotnet  (+5 duplicates)  
 Polly.Core                                                   8.8.0             dotnet  (+5 duplicates)  
@@ -78,9 +78,9 @@ SharpZipLib                                                  1.4.2             d
 SixLabors.ImageSharp                                         3.1.12            dotnet  (+5 duplicates)  
 SourceGear.sqlite3                                           3.53.4            dotnet  (+7 duplicates)  
 SpotifyAPI.Web                                               5.1.1             dotnet  (+5 duplicates)  
-Swashbuckle.AspNetCore.Annotations                           10.2.3            dotnet  (+2 duplicates)  
-Swashbuckle.AspNetCore.Swagger                               10.2.3            dotnet  (+2 duplicates)  
-Swashbuckle.AspNetCore.SwaggerGen                            10.2.3            dotnet  (+2 duplicates)  
+Swashbuckle.AspNetCore.Annotations                           10.3.0            dotnet  (+2 duplicates)  
+Swashbuckle.AspNetCore.Swagger                               10.3.0            dotnet  (+2 duplicates)  
+Swashbuckle.AspNetCore.SwaggerGen                            10.3.0            dotnet  (+2 duplicates)  
 System.Data.SQLite                                           2.0.4             dotnet  (+7 duplicates)  
 System.Diagnostics.EventLog                                  10.0.12           dotnet  (+2 duplicates)  
 System.IO.Abstractions                                       17.0.24           dotnet  (+7 duplicates)  
