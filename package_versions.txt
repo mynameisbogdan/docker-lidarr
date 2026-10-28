@@ -69,9 +69,9 @@ Npgsql                                                       10.0.3            d
 Openur.ChromaprintStatic                                     1.6.2.10          dotnet  (+5 duplicates)  
 Openur.Mono.Unix                                             7.1.0.256         dotnet                   
 Openur.TagLibSharp                                           2.5.0.10          dotnet  (+5 duplicates)  
-Polly                                                        8.8.1             dotnet  (+5 duplicates)  
+Polly                                                        8.9.0             dotnet  (+5 duplicates)  
 Polly.Contrib.WaitAndRetry                                   1.1.1             dotnet  (+5 duplicates)  
-Polly.Core                                                   8.8.1             dotnet  (+5 duplicates)  
+Polly.Core                                                   8.9.0             dotnet  (+5 duplicates)  
 ReusableTasks                                                4.0.0             dotnet  (+5 duplicates)  
 Sentry                                                       5.16.3            dotnet  (+7 duplicates)  
 SharpZipLib                                                  1.4.2             dotnet  (+7 duplicates)  
