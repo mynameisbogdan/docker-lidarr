@@ -18,7 +18,7 @@ COPY --chown=0:0 --chmod=755 \
 
 RUN set -eux && \
   echo "**** install packages ****" && \
-  apk add -U --upgrade --no-cache \
+  apk add --no-cache --upgrade \
     bash \
     ca-certificates \
     catatonit \
@@ -34,6 +34,7 @@ RUN set -eux && \
   echo "**** cleanup ****" && \
   rm -rf \
     /app/lidarr/bin/Lidarr.Update \
+    /var/log/* \
     /tmp/*
 
 COPY root/ /
