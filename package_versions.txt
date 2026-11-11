@@ -106,7 +106,7 @@ icu-libs                                                     78.1-r0           a
 jq                                                           1.8.2-r0          apk                      
 keyutils-libs                                                1.6.3-r4          apk                      
 krb5-conf                                                    1.0-r2            apk                      
-krb5-libs                                                    1.22.2-r1         apk                      
+krb5-libs                                                    1.22.3-r0         apk                      
 libapk                                                       3.0.9-r0          apk                      
 libcom_err                                                   1.47.4-r0         apk                      
 libcrypto3                                                   3.5.9-r0          apk                      
