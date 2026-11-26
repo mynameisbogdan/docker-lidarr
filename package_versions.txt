@@ -133,4 +133,4 @@ scanelf                                                      1.3.9-r1          a
 ssl_client                                                   1.37.0-r31        apk                      
 tzdata                                                       2026f-r0          apk                      
 zlib                                                         1.4-r0            apk                      
-zstd-libs                                                    1.6.0-r0          apk                      
+zstd-libs                                                    1.6.0-r1          apk                      
